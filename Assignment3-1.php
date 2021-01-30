@@ -57,8 +57,6 @@
 	
 		
 	</script>
-	
-	<p><span id="arrayOutput"></span></p>
 	</section>
 	
 	
