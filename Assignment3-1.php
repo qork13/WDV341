@@ -40,15 +40,12 @@
 	<p>Total of Number1 + Number 2: <?php echo $total ?></p>
 	
 	
-	<?php 
-		for($i=0; $i < count($code_array); $i++){
-	?>
+	
 	<script>
-		var code_array = <?php echo json_encode($code_array); ?>
+		var code_array = <?php echo json_encode($code_array); ?>;
+			
 	</script>
-	<?php
-		}
-	?>
+	
 
 	<script type="text/javascript">
 	
