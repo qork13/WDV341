@@ -1,16 +1,44 @@
-<?php 
-	$yourName = "Mike";
-	$number1 = 5;
-	$number2 = 5;
-	$total = $number1 + $number2;
+<?php
+	date_default_timezone_set('America/Chicago');
 	
-	$code_array = array(
+	function localDateFormat($timestamp) {
+		$date = date_create($timestamp);
+		return date_format($date, "m/d/Y");
+	}
 	
-		0 => 'PHP',
-		1 => 'HTML',
-		2 => 'Javascript'
+	function internationalDateFormat($timestamp) {
+		$date = date_create($timestamp);
+		return date_format($date, "d/m/Y");
+	}
+	
+	function stringFunction($inString) {
+		$length = strlen($inString);
+		$lower = strtolower($inString);
+		$charCount = 0;
+		$matches = array();
 		
-	);
+		if(preg_match_all("/[A-Z]/", $inString, $matches) > 0) {
+			foreach($matches[0] as $match) { $charCount += strlen($match); }
+		}
+		
+		
+		echo "<br>Length: ".$length."<br> Trimmed: ".trim($inString)."<br> Lower Case: ".$lower."<br> UpperCase count: ".$charCount;
+		
+		
+	}
+	
+	function phoneNumber($inPhone) {
+			$areaCode = substr($inPhone, 0, 3);
+			$countyCode = substr($inPhone, 3, 3);
+			$privateCode = substr($inPhone, 6, 4);
+			
+			echo $areaCode."-".$countyCode."-".$privateCode;
+	}
+	
+	function currencyFormat($inDollars) {
+		echo "$".number_format($inDollars, 2);
+	}
+
 ?>
 
 
@@ -28,35 +56,14 @@
 </head>
 
 <body>
-	<header>
-		<?php echo '<h1>Assignment 3-1 PHP Basics<h1>'; ?>
-	</header>
 
-	<section>
-	
-	<h2>My name is: <?php echo $yourName?>
-	<p>Number 1 value: <?php echo $number1 ?></p>
-	<p>Number 2 value: <?php echo $number2 ?></p>
-	<p>Total of Number1 + Number 2: <?php echo $total ?></p>
-	
-	
-	
-	<script>
-		var code_array = <?php echo json_encode($code_array); ?>;
-			
-	</script>
-	
+<p>This is problem number 1: <?php echo "Local Date Format: ".localDateFormat("2018-05-15"); ?></p>
+<p>This is problem number 2: <?php echo "International Date Format: ".internationalDateFormat("05/15/2018"); ?></p>
+<p>This is problem number 3: <?php echo stringFunction(" DMACC learning   "); ?></p>
+<p>This is problem number 4: Phone Number: <?php echo phoneNumber("1234567890"); ?></p>
+<p>This is problem number 5: <?php echo currencyFormat("123456"); ?></p>
 
-	<script type="text/javascript">
-	
-	
-	document.write("Javascript array results: " + code_array);
-	
-		
-	</script>
-	</section>
-	
-	
+
 </body>
 
 </html>
