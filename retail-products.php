@@ -1,10 +1,11 @@
 <?php
-require_once('dbConnect.php');
+require_once('connect-pdo.php');
 
 
 
 $query = 'SELECT product_name, product_description, product_price, product_status, product_inStock, product_image ';
 $query .= 'FROM wdv341_products ';
+$query .= 'ORDER BY product_name DESC ';
 $queryObj = $conn->prepare($query);
 $queryObj->execute();
 ?>
