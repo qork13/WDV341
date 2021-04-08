@@ -16,7 +16,7 @@ $date = '';
 $time = '';
 
 
-if($form_submitted && !$honeypot_value){
+if($form_submitted){
     $name = v_array('name', $_POST);
     $description = v_array('description', $_POST);
     $presenter = v_array('presenter', $_POST);
@@ -77,7 +77,7 @@ if($form_submitted && !$honeypot_value){
         <p>Let's create an event</p>
     </header>
     <section>
-        <?php if($form_submitted && $valid_form){ ?>
+        <?php if($form_submitted && $valid_form && !$honeypot_value){ ?>
         <div>
             <h2>Form submission successful!</h2>
             <p>Your event is added</p>
@@ -85,10 +85,10 @@ if($form_submitted && !$honeypot_value){
         <?php } elseif($form_submitted) { ?>
         <div>
             <h2>Uh Oh!</h2>
-            <p>There was a problem please see the errors below!</p>
+            <p>There was a problem please see the errors below! If no errors then you are a bot and you should be ashamed!!</p>
         </div>
          <?php } ?> 
-        <?php if(!$valid_form && $form_submitted || !$form_submitted) { ?>  
+        <?php if(!$valid_form && $form_submitted || !$form_submitted || $honeypot_value) { ?>  
         <div id="form-content">
             <form name="form1" id="form-1" method="post" action="self-posting-form.php">
                 <p>
