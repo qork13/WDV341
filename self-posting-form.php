@@ -1,5 +1,10 @@
 <?php
 include 'validation.php';
+include_once 'functions.php';
+
+$events = get_events();
+$db_time_format = 'H:i:s';
+$db_date_format = 'Y-m-d';
 
 $valid_form = true;
 $honeypot_value = v_array('do_not_touch', $_POST);
@@ -14,7 +19,7 @@ $presenter = '';
 $description = '';
 $date = '';
 $time = '';
-
+$result = v_array('result', $_GET);
 
 if($form_submitted){
     $name = v_array('name', $_POST);
@@ -77,20 +82,15 @@ if($form_submitted){
         <p>Let's create an event</p>
     </header>
     <section>
-        <?php if($form_submitted && $valid_form && !$honeypot_value){ ?>
+        <?php if($valid_form && $form_submitted && !$honeypot_value){ ?>
         <div>
             <h2>Form submission successful!</h2>
-            <p>Your event is added</p>
-        </div>
-        <?php } elseif($form_submitted) { ?>
-        <div>
-            <h2>Uh Oh!</h2>
-            <p>There was a problem please see the errors below! If no errors then you are a bot and you should be ashamed!!</p>
+            <p>Your event was added</p>
         </div>
          <?php } ?> 
         <?php if(!$valid_form && $form_submitted || !$form_submitted || $honeypot_value) { ?>  
         <div id="form-content">
-            <form name="form1" id="form-1" method="post" action="self-posting-form.php">
+            <form name="form1" id="form-1" method="post" action="event-upload.php" enctype="multipart/form-data">
                 <p>
                     <span id="error-name" class="error"><?=$error_name?></span>
                     <label for="name">Event Name: </label>
@@ -110,12 +110,12 @@ if($form_submitted){
                 <p>
                     <span id="error-date" class="error"><?=$error_date?></span>
                     <label for="date">Event Date: </label>
-                    <input type="text" name="date" id="date" value="<?=$date ? $date : ''?>">
+                    <input type="text" name="date" id="date" value="<?=$date ? $date : ''?>" placeholder = "ex. 2021-03-04">
                 </p>
                 <p>
                     <span id="error-time" class="error"><?=$error_time?></span>
                     <label for="time">Event Time: </label>
-                    <input type="text" name="time" id="time" value="<?=$time ? $time : ''?>">
+                    <input type="text" name="time" id="time" value="<?=$time ? $time : ''?>" placeholder = "ex. 18:00:00">
                 </p>
                 <p>
                     <input type="submit" name="submit" id="submit" value="Submit">
@@ -125,6 +125,26 @@ if($form_submitted){
             </form>
         </div>
         <?php } ?>
+        <table class="center" id="events">
+		<tr>
+			<th>Event</th>
+			<th>Presenter</th>
+			<th>Time</th>
+			<th>Date</th>
+			<th>Description</th>
+		</tr>
+	<?php foreach($events as $result) { ?>
+		<tr>
+			<td><?=$result['name']?></td>
+			<td><?=$result['presenter']?></td>
+			<?php $time = DateTime::createFromFormat($db_time_format, $result['time']); ?>
+			<td><?=$time->format('g:i a')?></td>
+			<?php $date = DateTime::createFromFormat($db_date_format, $result['date']); ?>
+			<td><?=$date->format('l M. d, Y')?></td>
+			<td><?=$result['description']?></td>
+		</tr>
+	<?php } ?>
+	</table>
  </section>
 </body>
 </html>
